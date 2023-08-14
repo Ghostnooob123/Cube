@@ -341,7 +341,7 @@ void Game::initVariables() {
 
 	this->centerX = 0.0f;
 	this->centerY = 0.0f;
-
+		
 	this->fileName = "Higest Score.txt";
 }
 void Game::initWindow() {
