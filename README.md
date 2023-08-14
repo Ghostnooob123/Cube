@@ -4,7 +4,7 @@ Simple cube game where you gain points by clicking on the falling cubes, if you 
 
 ## How to Use
 
-Find Cube.exe and run it.
+Find Cube.exe inside Cube folder and run it.
 When game is running there will be menu to Play or to Quit. Also there is a panel showing highest score recorded on the game.
 
 ## Dependencies
