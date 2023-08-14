@@ -157,7 +157,7 @@ void Game::updateEnemies() {
 	{
 
 		//Move enemy on the screen
-		this->enemies[i].move(0.0f, 2.0f);
+		this->enemies[i].move(0.0f, 1.5f);
 
 		//If the enemy is past the bottom of the screen
 		if (this->enemies[i].getPosition().y > this->window->getSize().y)
