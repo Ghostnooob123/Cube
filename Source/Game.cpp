@@ -104,7 +104,7 @@ void Game::spawnEnemy() {
 	switch (type) {
 	case 0:
 		this->enemy.setFillColor(sf::Color::Magenta);
-		this->enemy.setSize(sf::Vector2f(30.0f, 30.0f));
+		this->enemy.setSize(sf::Vector2f(45.0f, 45.0f));
 		break;
 	case 1:
 		this->enemy.setFillColor(sf::Color::Red);
@@ -157,7 +157,7 @@ void Game::updateEnemies() {
 	{
 
 		//Move enemy on the screen
-		this->enemies[i].move(0.0f, 1.5f);
+		this->enemies[i].move(0.0f, 2.0f);
 
 		//If the enemy is past the bottom of the screen
 		if (this->enemies[i].getPosition().y > this->window->getSize().y)
@@ -336,7 +336,7 @@ void Game::initVariables() {
 	this->health = 100;
 	this->enemySpawnTimerMax = 50.0f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 5;
+	this->maxEnemies = 4;
 	this->mouseHeld = false;
 
 	this->centerX = 0.0f;
