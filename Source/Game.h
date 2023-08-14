@@ -8,7 +8,6 @@
 #include <fstream>
 
 #include <ctime>
-#include <climits>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -88,6 +87,9 @@ private:
 	float enemySpawnTimerMax;
 	int maxEnemies;
 	bool mouseHeld;
+
+	float centerX;
+	float centerY;
 
 	std::string fileName; //Save highest score in this file
 

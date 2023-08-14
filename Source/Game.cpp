@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <Windows.h>
 
 //Constructors & Destructors
 Game::Game() {
@@ -158,7 +157,7 @@ void Game::updateEnemies() {
 	{
 
 		//Move enemy on the screen
-		this->enemies[i].move(0.0f, 1.0f);
+		this->enemies[i].move(0.0f, 1.5f);
 
 		//If the enemy is past the bottom of the screen
 		if (this->enemies[i].getPosition().y > this->window->getSize().y)
@@ -168,7 +167,6 @@ void Game::updateEnemies() {
 
 			//Lose health when enemy reach bottom of the screen
 			this->health -= 10;
-			std::cout << "[+] Health: " << this->health << '\n';
 		}
 	}
 
@@ -184,17 +182,15 @@ void Game::updateEnemies() {
 			{
 				if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
 				{
-					if (this->enemies[i].getFillColor() == sf::Color::Red)
+					if (this->enemies[i].getFillColor() == sf::Color::Magenta)
 					{
 						//Gain points
 						this->points += 20;
-						std::cout << "[+] Points: " << this->points << '\n';
 					}
 					else
 					{
 						//Gain points
 						this->points += 5;
-						std::cout << "[+] Points: " << this->points << '\n';
 					}
 
 					//Delete enemy
@@ -208,7 +204,6 @@ void Game::updateEnemies() {
 	{
 		this->mouseHeld = false;
 	}
-	if (this->health <= 0) { this->endGame = true; }
 }
 void Game::renderEnemies(sf::RenderTarget& target) {
 	for (auto& enemy : this->enemies) {
@@ -266,9 +261,15 @@ void Game::update() {
 	//Update mouse position
 	this->updateMousePos();
 
+	//Update menu
 	this->updateMenu();
 
 	if (this->startGame) {
+
+		if (this->health <= 0) {
+			this->endGame = true;
+		}
+
 		if (!this->endGame)
 		{
 			//Update text
@@ -282,8 +283,15 @@ void Game::update() {
 			//Update the score after the game
 			this->updateScore();
 
-			//Close the game when it end
-			this->window->close();
+			//Reset game variables
+			this->points = 0;
+			this->health = 100;
+			this->enemySpawnTimer = this->enemySpawnTimerMax;
+			this->enemies.clear(); // Clear the enemies vector
+
+			//Game start again
+			this->startGame = false;
+			this->endGame = false;
 		}
 	}
 }
@@ -331,6 +339,9 @@ void Game::initVariables() {
 	this->maxEnemies = 5;
 	this->mouseHeld = false;
 
+	this->centerX = 0.0f;
+	this->centerY = 0.0f;
+
 	this->fileName = "Higest Score.txt";
 }
 void Game::initWindow() {
@@ -338,9 +349,13 @@ void Game::initWindow() {
 	this->videoMode.height = 800;
 	this->videoMode.width = 1300;
 
-	this->window = new sf::RenderWindow(sf::VideoMode(this->videoMode), "Cubes", sf::Style::Titlebar | sf::Style::Close);
+	this->window = new sf::RenderWindow(sf::VideoMode(), "Cube", sf::Style::Fullscreen);
 
-	this->window->setFramerateLimit(165);
+	this->window->setFramerateLimit(500);
+
+	//Center of the screen
+	this->centerX = this->window->getSize().x / 2.0f;
+	this->centerY = this->window->getSize().y / 2.0f;
 }
 void Game::initFonts() {
 	//Check if font can be loaded
@@ -352,7 +367,7 @@ void Game::initMenu() {
 	//Set highest score menu by default
 	this->highestScoreMenu.setFillColor(sf::Color::White);
 	this->highestScoreMenu.setSize(sf::Vector2f(200.0f, 58.0f));
-	this->highestScoreMenu.setPosition(550.0f, 340.0f);
+	this->highestScoreMenu.setPosition(centerX - this->highestScoreMenu.getSize().x / 2.0f, 50.0f);
 
 	//Set highest score text by default
 	this->uiHighestScore.setFont(this->font);
@@ -364,7 +379,7 @@ void Game::initMenu() {
 	//Set play button by default
 	this->playButton.setFillColor(sf::Color::White);
 	this->playButton.setSize(sf::Vector2f(160.0f, 58.0f));
-	this->playButton.setPosition(570.0f, 400.0f);
+	this->playButton.setPosition(centerX - this->playButton.getSize().x / 2.0f, this->highestScoreMenu.getPosition().y + this->highestScoreMenu.getSize().y + 20.0f);
 
 	//Set play button text by default
 	this->uiPlayText.setFont(this->font);
@@ -376,7 +391,7 @@ void Game::initMenu() {
 	//Set quit button by default
 	this->quitButton.setFillColor(sf::Color::White);
 	this->quitButton.setSize(sf::Vector2f(160.0f, 58.0f));
-	this->quitButton.setPosition(570.0f, 560.0f);
+	this->quitButton.setPosition(centerX - this->quitButton.getSize().x / 2.0f, this->playButton.getPosition().y + this->playButton.getSize().y + 20.0f);
 
 	//Set quit button text by default
 	this->uiQuitText.setFont(this->font);
@@ -388,7 +403,7 @@ void Game::initMenu() {
 void Game::initGameText() {
 	//Set text by default
 	this->uiText.setFont(this->font);
-	this->uiText.setCharacterSize(30);
+	this->uiText.setCharacterSize(35);
 	this->uiText.setFillColor(sf::Color::White);
 	this->uiText.setString("NONE");
 }
