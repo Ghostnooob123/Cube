@@ -146,11 +146,13 @@ void Game::updateEnemies() {
 	{
 
 		//Move enemy on the screen
-		this->enemies[i].move(0.0f, 1.0f);
-
-		if (this->points >= 1000) 
+		if (this->points >= 10000) 
 		{ 
-			this->enemies[i].move(0.0f, 1.5f); 
+			this->enemies[i].move(0.0f, 1.6f); 
+		}
+		else
+		{
+			this->enemies[i].move(0.0f, 1.2f);
 		}
 
 		//If the enemy is past the bottom of the screen
@@ -221,19 +223,20 @@ void Game::updateHealthPacks() {
     */
 	//Updating the timer and spawning health pack
 	if (this->healthPacks.size() < 1) {
-		if (this->healthPackSpawnTimer >= this->healthPackSpawnTimerMax && this->points > 700) {
+		if (this->healthPackSpawnTimer >= this->healthPackSpawnTimerMax && this->points >= 100) {
 			//Spawn enemy and reset timer
 			this->spawnHealthPack();
 			this->healthPackSpawnTimer = 0.0f;
 		}
 		else
-			this->healthPackSpawnTimer += 1.f;
+			this->healthPackSpawnTimer += 1.0f;
 	}
 
 	//Moving the health pack
-	for (size_t i = 0; i < this->healthPacks.size(); i++)
+	for (size_t i = 0; i < this->healthPacks.size(); ++i)
 	{
-		this->healthPacks[i].move(0.0f, 1.5f);
+		//Move health pack on the screen
+		this->healthPacks[i].move(0.0f, 1.6f);
 
 		//If the health pack is past the bottom of the screen
 		if (this->healthPacks[i].getPosition().y > this->window->getSize().y)
@@ -246,7 +249,7 @@ void Game::updateHealthPacks() {
 	//Updating health packs
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		for (size_t i = 0; i < this->healthPacks.size(); i++)
+		for (size_t i = 0; i < this->healthPacks.size(); ++i)
 		{
 			if (this->healthPacks[i].getGlobalBounds().contains(this->mousePosView)) {
 				//Gain health
@@ -409,12 +412,12 @@ void Game::initVariables() {
 	this->points = 0; // Points player gained
 	this->highestScore = 0; //Highest score recorded on the game
 	this->health = 100; //Player health
-	this->enemySpawnTimerMax = 60.0f; //Spawner timer max
+	this->enemySpawnTimerMax = 65.0f; //Spawner timer max
 	this->enemySpawnTimer = this->enemySpawnTimerMax; //Spawner timer 
-	this->maxEnemies = 4; //Max enemies on the screen
+	this->maxEnemies = 5; //Max enemies on the screen
 	this->mouseHeld = false; //Is mouse being hold
 
-	this->healthPackSpawnTimerMax = 1500.0f; //Health pack spawn timer max
+	this->healthPackSpawnTimerMax = 2000.0f; //Health pack spawn timer max
 	this->healthPackSpawnTimer = 0.0f; //Health pack spawn timer
 
 	this->centerX = 0.0f; //Center of the screen by X
