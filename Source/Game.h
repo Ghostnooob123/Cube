@@ -29,6 +29,7 @@ public:
 	//Accessors
 	const bool running() const;
 	const unsigned getHighestScore();
+	const sf::RectangleShape setEnemyType();
 
 	//UI functions
 	void updateText();
@@ -38,9 +39,16 @@ public:
 	void renderMenu(sf::RenderTarget& target);
 
 	//Game objects functions
+	//Spawn enemies
 	void spawnEnemy();
 	void updateEnemies();
 	void renderEnemies(sf::RenderTarget& target);
+	//Spawn health packs
+	void spawnHealthPack();
+	void updateHealthPacks();
+	void renderHealthPacks(sf::RenderTarget& target);
+
+	//Game score update
 	void updateScore();
 
 	//Game Functions
@@ -88,6 +96,9 @@ private:
 	int maxEnemies;
 	bool mouseHeld;
 
+	float healthPackSpawnTimer;
+	float healthPackSpawnTimerMax;
+
 	float centerX;
 	float centerY;
 
@@ -97,6 +108,8 @@ private:
 	std::vector<sf::RectangleShape> enemies;
 	sf::RectangleShape enemy;
 
+	std::vector<sf::CircleShape> healthPacks;
+	sf::CircleShape healthPack;
 
 	//Private functions
 	void initVariables();
@@ -104,7 +117,7 @@ private:
 	void initFonts();
 	void initMenu();
 	void initGameText();
-	void initEnemies();
+	void initGameObjects();
 };
 #endif // !GAME_H
 

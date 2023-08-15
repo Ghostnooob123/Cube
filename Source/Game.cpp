@@ -7,7 +7,7 @@ Game::Game() {
 	this->initFonts();
 	this->initMenu();
 	this->initGameText();
-	this->initEnemies();
+	this->initGameObjects();
 }
 Game::~Game() {
 	delete this->window;
@@ -23,11 +23,18 @@ const unsigned Game::getHighestScore() {
 	std::ifstream inputFile(this->fileName);
 	std::string line;
 	while (std::getline(inputFile, line)) {
-		score = static_cast<unsigned>(std::stoi(line));
+		score = std::stoi(line);
 	}
 	inputFile.close();
 
 	return score;
+}
+const sf::RectangleShape Game::setEnemyType() {
+
+	sf::Color randomColor(rand() % 256, rand() % 256, rand() % 256);
+	this->enemy.setFillColor(randomColor);
+
+	return this->enemy;
 }
 
 //UI functions
@@ -40,6 +47,7 @@ void Game::updateText() {
 	this->uiText.setString(ostr.str());
 }
 void Game::renderText(sf::RenderTarget& target) {
+	//Render Points and Health text
 	target.draw(this->uiText);
 }
 
@@ -73,12 +81,13 @@ void Game::updateMenu() {
 	this->uiQuitText.setString(ostrQuit.str());
 }
 void Game::renderMenu(sf::RenderTarget& target) {
+	//Render high score panel
 	target.draw(this->highestScoreMenu);
 	target.draw(this->uiHighestScore);
-
+	//Render play button
 	target.draw(this->playButton);
 	target.draw(this->uiPlayText);
-
+	//Render quit button
 	target.draw(this->quitButton);
 	target.draw(this->uiQuitText);
 }
@@ -92,41 +101,21 @@ void Game::spawnEnemy() {
 	   - Sets random type(diff).
 	   - Sets a random positions.
 	   - Sets a random color.
+	   - Sets a random size.
 	   - Add enemy to the vector(enemies).
 	*/
 
 	this->enemy.setPosition(
-		static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - this->enemy.getSize().x)), 0.0f);
+		static_cast<float>(50.0f + rand() % static_cast<int>(this->window->getSize().x - 2 * 50.0f - this->enemy.getSize().x)), 0.0f
+	);
 
 	//Randomazie enemy type
-	int type = rand() % 5;
+	sf::Color randomColor(rand() % 256, rand() % 256, rand() % 256);
+	this->enemy.setFillColor(randomColor);
 
-	switch (type) {
-	case 0:
-		this->enemy.setFillColor(sf::Color::Magenta);
-		this->enemy.setSize(sf::Vector2f(45.0f, 45.0f));
-		break;
-	case 1:
-		this->enemy.setFillColor(sf::Color::Red);
-		this->enemy.setSize(sf::Vector2f(50.0f, 50.0f));
-		break;
-	case 2:
-		this->enemy.setFillColor(sf::Color::Cyan);
-		this->enemy.setSize(sf::Vector2f(90.0f, 90.0f));
-		break;
-	case 3:
-		this->enemy.setFillColor(sf::Color::Blue);
-		this->enemy.setSize(sf::Vector2f(80.0f, 80.0f));
-		break;
-	case 4:
-		this->enemy.setFillColor(sf::Color::Yellow);
-		this->enemy.setSize(sf::Vector2f(100.0f, 100.0f));
-		break;
-	default:
-		this->enemy.setFillColor(sf::Color::Green);
-		this->enemy.setSize(sf::Vector2f(75.0f, 75.0f));
-		break;
-	}
+	//Randomazie enemy size
+	float randomSize = 50.0f + static_cast<float>(rand() % (int)(80.0f - 50.0f + 1));
+	this->enemy.setSize(sf::Vector2f(randomSize, randomSize));
 
 	//Spawn enemy
 	this->enemies.push_back(this->enemy);
@@ -159,6 +148,11 @@ void Game::updateEnemies() {
 		//Move enemy on the screen
 		this->enemies[i].move(0.0f, 1.5f);
 
+		if (this->points >= 1000) 
+		{ 
+			this->enemies[i].move(0.0f, 2.0f); 
+		}
+
 		//If the enemy is past the bottom of the screen
 		if (this->enemies[i].getPosition().y > this->window->getSize().y)
 		{
@@ -166,7 +160,7 @@ void Game::updateEnemies() {
 			this->enemies.erase(this->enemies.begin() + i);
 
 			//Lose health when enemy reach bottom of the screen
-			this->health -= 10;
+			this->health -= 5;
 		}
 	}
 
@@ -182,16 +176,8 @@ void Game::updateEnemies() {
 			{
 				if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
 				{
-					if (this->enemies[i].getFillColor() == sf::Color::Magenta)
-					{
-						//Gain points
-						this->points += 20;
-					}
-					else
-					{
-						//Gain points
-						this->points += 5;
-					}
+					//Gain points
+					this->points += 10;
 
 					//Delete enemy
 					deleted = true;
@@ -200,10 +186,7 @@ void Game::updateEnemies() {
 			}
 		}
 	}
-	else
-	{
-		this->mouseHeld = false;
-	}
+	else{ this->mouseHeld = false; }
 }
 void Game::renderEnemies(sf::RenderTarget& target) {
 	for (auto& enemy : this->enemies) {
@@ -211,21 +194,108 @@ void Game::renderEnemies(sf::RenderTarget& target) {
 	}
 }
 
+void Game::spawnHealthPack() {
+	/*
+	 @return void
+
+	 - Spawing health pack.
+	 - Set health pack spawn location.
+
+	*/
+
+	//Health pack spawn
+	this->healthPack.setPosition( static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - 2* this->healthPack.getRadius())), 0.0f);
+
+	this->healthPack.setFillColor(sf::Color(230, 16, 87));
+
+	this->healthPacks.push_back(this->healthPack);
+
+}
+void Game::updateHealthPacks() {
+	/*
+	 @return void
+
+	 - Updating health pack timer.
+	 - Spawing health pack.
+	
+    */
+	//Updating the timer and spawning health pack
+	if (this->healthPacks.size() < 1) {
+		if (this->healthPackSpawnTimer >= this->healthPackSpawnTimerMax && this->points > 1000) {
+			//Spawn enemy and reset timer
+			this->spawnHealthPack();
+			this->healthPackSpawnTimer = 0.0f;
+		}
+		else
+			this->healthPackSpawnTimer += 0.5f;
+	}
+
+	//Moving the health pack
+	for (size_t i = 0; i < this->healthPacks.size(); i++)
+	{
+		this->healthPacks[i].move(0.0f, 2.0f);
+
+		//If the health pack is past the bottom of the screen
+		if (this->healthPacks[i].getPosition().y > this->window->getSize().y)
+		{
+			//Delete health pack on the screen
+			this->healthPacks.erase(this->healthPacks.begin() + i);
+		}
+	}
+
+	//Updating health packs
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		for (size_t i = 0; i < this->healthPacks.size(); i++)
+		{
+			if (this->healthPacks[i].getGlobalBounds().contains(this->mousePosView)) {
+				//Gain health
+				if (this->health < 100)
+				{
+					this->health += 5;
+					if (this->health > 100) { this->health = 100; }
+
+				}
+
+				//Delete health pack when touched
+				this->healthPacks.erase(this->healthPacks.begin() + i);
+
+			}
+		}
+	}
+}
+void Game::renderHealthPacks(sf::RenderTarget& target) {
+	for (auto& healthDrop : this->healthPacks) {
+		target.draw(healthDrop);
+	}
+}
+
 void Game::updateScore() {
 	this->highestScore = this->points;
 
 	std::ifstream inputFile(this->fileName);
-	std::string line;
-	while (std::getline(inputFile, line)) {
-		if (this->highestScore > static_cast<unsigned>(std::stoi(line))) {
-			std::ofstream outputFileT(this->fileName, std::ios::trunc);
-			std::ofstream  outputFile(this->fileName, std::ios::app);
-			outputFile << this->highestScore << '\n';
-			outputFileT.close();
-			outputFile.close();
+	if (inputFile.is_open()) {
+		std::string line;
+		while (std::getline(inputFile, line)) {
+			if (!line.empty()) {
+				int scoreFromFile = std::stoi(line);
+				if (this->highestScore > static_cast<unsigned>(scoreFromFile)) {
+					std::ofstream outputFile(this->fileName, std::ios::trunc);
+					if (outputFile.is_open()) {
+						outputFile << this->highestScore << '\n';
+						outputFile.close();
+					}
+					else {
+						std::cout << "[-] Error::Game::updateScore Failed to open output file\n";
+					}
+				}
+			}
 		}
+		inputFile.close();
 	}
-	inputFile.close();
+	else {
+		std::cout << "[-] Error::Game::updateScore Failed to open input file\n";
+	}
 }
 
 //Game Functions
@@ -277,6 +347,9 @@ void Game::update() {
 
 			//Update enemies
 			this->updateEnemies();
+
+			//Update health packs
+			this->updateHealthPacks();
 		}
 		else
 		{
@@ -307,15 +380,17 @@ void Game::render() {
 	*/
 	this->window->clear(sf::Color::Black);
 
-	//Draw menu
 	if (!this->startGame)
 	{
+		//Draw menu
 		this->renderMenu(*this->window);
 	}
 	else
 	{
 		//Draw game objects
 		this->renderEnemies(*this->window);
+
+		this->renderHealthPacks(*this->window);
 
 		this->renderText(*this->window);
 	}
@@ -329,18 +404,21 @@ void Game::initVariables() {
 	this->window = nullptr;
 
 	//Game logic
-	this->startGame = false;
-	this->endGame = false;
-	this->points = 0;
-	this->highestScore = 0;
-	this->health = 100;
-	this->enemySpawnTimerMax = 50.0f;
-	this->enemySpawnTimer = this->enemySpawnTimerMax;
-	this->maxEnemies = 4;
-	this->mouseHeld = false;
+	this->startGame = false; //Is game started
+	this->endGame = false; //Is game ended
+	this->points = 0; // Points player gained
+	this->highestScore = 0; //Highest score recorded on the game
+	this->health = 100; //Player health
+	this->enemySpawnTimerMax = 60.0f; //Spawner timer max
+	this->enemySpawnTimer = this->enemySpawnTimerMax; //Spawner timer 
+	this->maxEnemies = 4; //Max enemies on the screen
+	this->mouseHeld = false; //Is mouse being hold
 
-	this->centerX = 0.0f;
-	this->centerY = 0.0f;
+	this->healthPackSpawnTimerMax = 2000.0f; //Health pack spawn timer max
+	this->healthPackSpawnTimer = 0.0f; //Health pack spawn timer
+
+	this->centerX = 0.0f; //Center of the screen by X
+	this->centerY = 0.0f; //Center of the screen by Y
 		
 	this->fileName = "Higest Score.txt";
 }
@@ -349,7 +427,7 @@ void Game::initWindow() {
 	this->videoMode.height = 800;
 	this->videoMode.width = 1300;
 
-	this->window = new sf::RenderWindow(sf::VideoMode(), "Cube", sf::Style::Fullscreen);
+	this->window = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Cube", sf::Style::Fullscreen | sf::Style::Close);
 
 	this->window->setFramerateLimit(500);
 
@@ -407,6 +485,8 @@ void Game::initGameText() {
 	this->uiText.setFillColor(sf::Color::White);
 	this->uiText.setString("NONE");
 }
-void Game::initEnemies() {
-	this->enemies;
+void Game::initGameObjects() {
+	//Default game objects values
+	this->healthPack.setRadius(25.0f);
+	this->enemy.setSize(sf::Vector2f(0.0f,0.0f));
 }
