@@ -114,7 +114,7 @@ void Game::spawnEnemy() {
 	this->enemy.setFillColor(randomColor);
 
 	//Randomazie enemy size
-	float randomSize = 50.0f + static_cast<float>(rand() % (int)(80.0f - 50.0f + 1));
+	float randomSize = 60.0f + static_cast<float>(rand() % (int)(80.0f - 60.0f + 1));
 	this->enemy.setSize(sf::Vector2f(randomSize, randomSize));
 
 	//Spawn enemy
@@ -146,11 +146,11 @@ void Game::updateEnemies() {
 	{
 
 		//Move enemy on the screen
-		this->enemies[i].move(0.0f, 1.5f);
+		this->enemies[i].move(0.0f, 1.0f);
 
 		if (this->points >= 1000) 
 		{ 
-			this->enemies[i].move(0.0f, 2.0f); 
+			this->enemies[i].move(0.0f, 1.5f); 
 		}
 
 		//If the enemy is past the bottom of the screen
@@ -221,19 +221,19 @@ void Game::updateHealthPacks() {
     */
 	//Updating the timer and spawning health pack
 	if (this->healthPacks.size() < 1) {
-		if (this->healthPackSpawnTimer >= this->healthPackSpawnTimerMax && this->points > 1000) {
+		if (this->healthPackSpawnTimer >= this->healthPackSpawnTimerMax && this->points > 700) {
 			//Spawn enemy and reset timer
 			this->spawnHealthPack();
 			this->healthPackSpawnTimer = 0.0f;
 		}
 		else
-			this->healthPackSpawnTimer += 0.5f;
+			this->healthPackSpawnTimer += 1.f;
 	}
 
 	//Moving the health pack
 	for (size_t i = 0; i < this->healthPacks.size(); i++)
 	{
-		this->healthPacks[i].move(0.0f, 2.0f);
+		this->healthPacks[i].move(0.0f, 1.5f);
 
 		//If the health pack is past the bottom of the screen
 		if (this->healthPacks[i].getPosition().y > this->window->getSize().y)
@@ -414,7 +414,7 @@ void Game::initVariables() {
 	this->maxEnemies = 4; //Max enemies on the screen
 	this->mouseHeld = false; //Is mouse being hold
 
-	this->healthPackSpawnTimerMax = 2000.0f; //Health pack spawn timer max
+	this->healthPackSpawnTimerMax = 1500.0f; //Health pack spawn timer max
 	this->healthPackSpawnTimer = 0.0f; //Health pack spawn timer
 
 	this->centerX = 0.0f; //Center of the screen by X
