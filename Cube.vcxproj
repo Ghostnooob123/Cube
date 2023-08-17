@@ -136,10 +136,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Source\CubeBoss.cpp" />
+    <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\Game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Source\CubeBoss.h" />
+    <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\Game.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Cube.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\HeroZ\Downloads\Cube (1).ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
