@@ -4,11 +4,11 @@
 Game::Game() {
 	this->initVariables();
 	this->initWindow();
-	this->initIcon();
 	this->initFonts();
 	this->initMenu();
 	this->initSettingsMenu();
 	this->initMusic();
+	this->initIcon();
 	this->initGameText();
 	this->initGameObjects();
 }

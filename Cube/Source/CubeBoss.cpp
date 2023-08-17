@@ -234,7 +234,7 @@ void CubeBoss::renderBoarders(sf::RenderTarget& target) {
 //Private functions
 void CubeBoss::initVariables() {
 	//Game logic
-	this->bossHealth = 200; //Cube boss health
+	this->bossHealth = 1000; //Cube boss health
 	this->maxBosses = 1; //Max amount of bosses to spawn
 	this->maxAttacks = 6; //Max amount of bosses to spawn
 	this->mouseHeld = false; //Is mouse being hold

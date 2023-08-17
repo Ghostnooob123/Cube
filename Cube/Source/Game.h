@@ -32,7 +32,6 @@ public:
 	//Accessors
 	const bool running() const;
 	const unsigned getHighestScore();
-	const sf::RectangleShape setEnemyType();
 
 	//UI functions
 	void updateText();
@@ -133,7 +132,6 @@ private:
 	void initIcon();
 	void initFonts();
 	void initMusic();
-	void initTextures();
 	void initMenu();
 	void initSettingsMenu();
 	void initGameText();
