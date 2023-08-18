@@ -1,11 +1,12 @@
 # Cube
 
 Simple cube game where you gain points by clicking on the falling cubes, if you miss one cube you lose health and when health is below or equal to 0 you die.
+There is also strong enemy which you have to defeat.
 
 ## How to Use
-
+The program is safe to run but may occur a warning due the fact the program is not widely known.
 Find Cube.exe inside Cube folder and run it.
-When game is running there will be menu to Play or to Quit. Also there is a panel showing highest score recorded on the game.
+When game is running there will be menu to Play or to Quit. Also there is a panel showing highest score on the game recorded and settings to adjust game settings like fullscreen or windowed screen.
 
 ## Dependencies
 
