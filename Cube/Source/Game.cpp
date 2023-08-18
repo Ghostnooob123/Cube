@@ -114,7 +114,7 @@ void Game::updateMenu() {
 				// Toggle fullscreen
 				if (isFullScreen)
 				{
-					this->window->create(sf::VideoMode::getFullscreenModes()[0], "Cube", sf::Style::Titlebar | sf::Style::Close);
+					this->window->create(sf::VideoMode::getFullscreenModes()[0], "Cube", sf::Style::Resize | sf::Style::Close);
 					this->fullScreenToggle.setFillColor(sf::Color::Red);
 					isFullScreen = false;
 				}

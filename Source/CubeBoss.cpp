@@ -22,7 +22,7 @@ void CubeBoss::setHealth() {
 	   @return void
 	   - set (new) boss health.
 	*/
-	this->bossHealth = 200;
+	this->bossHealth = 1000;
 }
 void CubeBoss::reset() {
 	/*
