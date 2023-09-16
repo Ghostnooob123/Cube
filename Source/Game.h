@@ -23,7 +23,7 @@
 	Wrapper class
 */
 
-class Game {
+class Game final {
 public:
 	//Constructors & Destructors
 	Game();
@@ -54,8 +54,6 @@ public:
 	void updateMousePos();
 	void update();
 	void render();
-
-protected:
 
 private:
 	//Variables

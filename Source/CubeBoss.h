@@ -10,7 +10,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/Audio.hpp>
 
-class CubeBoss {
+class CubeBoss final {
 public:
 	//Constructors & Destructors
 	CubeBoss();

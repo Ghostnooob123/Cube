@@ -491,7 +491,7 @@ void Game::initMusic() {
 
 	// Change some parameters
 	this->music.setLoop(true);
-	this->music.setVolume(1.5f);
+	this->music.setVolume(2.5f);
 }
 void Game::initMenu() {
 	//Set highest score menu by default
@@ -499,7 +499,7 @@ void Game::initMenu() {
 	this->highestScoreMenu.setSize(sf::Vector2f(700.0f, 90.0f));
 	this->highestScoreMenu.setPosition(centerX - this->highestScoreMenu.getSize().x / 2.0f, 50.0f);
 
-	//Set highest score text by default
+	//Set highest score UI by default
 	this->uiHighestScore.setFont(this->menuFont);
 	this->uiHighestScore.setCharacterSize(65);
 	this->uiHighestScore.setPosition(this->highestScoreMenu.getPosition().x + 120.0f, this->highestScoreMenu.getPosition().y -5.0f);
@@ -511,10 +511,10 @@ void Game::initMenu() {
 	this->playButton.setSize(sf::Vector2f(300.0f, 60.0f));
 	this->playButton.setPosition(centerX - this->playButton.getSize().x / 2.0f, centerY + 50.0f);
 
-	//Set play button text by default
+	//Set play button UI by default
 	this->uiPlayText.setFont(this->menuFont);
 	this->uiPlayText.setCharacterSize(55);
-	this->uiPlayText.setPosition(this->playButton.getPosition().x + 100.0f, this->playButton.getPosition().y -8.0f);
+	this->uiPlayText.setPosition(this->playButton.getPosition().x + 100.0f, this->playButton.getPosition().y - 12.0f);
 	this->uiPlayText.setFillColor(sf::Color::Black);
 	this->uiPlayText.setString("NONE");
 
@@ -523,10 +523,10 @@ void Game::initMenu() {
 	this->settingsButton.setSize(sf::Vector2f(300.0f, 60.0f));
 	this->settingsButton.setPosition(centerX - this->settingsButton.getSize().x / 2.0f, centerY + 120.0f);
 
-	//Set settings button text by default
+	//Set settings button UI by default
 	this->uiSettingsText.setFont(this->menuFont);
 	this->uiSettingsText.setCharacterSize(55);
-	this->uiSettingsText.setPosition(this->settingsButton.getPosition().x + 65.0f, this->settingsButton.getPosition().y - 8.0f);
+	this->uiSettingsText.setPosition(this->settingsButton.getPosition().x + 65.0f, this->settingsButton.getPosition().y - 12.0f);
 	this->uiSettingsText.setFillColor(sf::Color::Black);
 	this->uiSettingsText.setString("NONE");
 
@@ -535,10 +535,10 @@ void Game::initMenu() {
 	this->quitButton.setSize(sf::Vector2f(300.0f, 60.0f));
 	this->quitButton.setPosition(centerX - this->quitButton.getSize().x / 2.0f, centerY + 250.0f);
 
-	//Set quit button text by default
+	//Set quit button UI by default
 	this->uiQuitText.setFont(this->menuFont);
 	this->uiQuitText.setCharacterSize(55);
-	this->uiQuitText.setPosition(this->quitButton.getPosition().x + 100.0f, this->quitButton.getPosition().y -8.0f);
+	this->uiQuitText.setPosition(this->quitButton.getPosition().x + 100.0f, this->quitButton.getPosition().y - 12.0f);
 	this->uiQuitText.setFillColor(sf::Color::Black);
 	this->uiQuitText.setString("NONE");
 }

@@ -10,7 +10,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/Audio.hpp>
 
-class Enemy {
+class Enemy final {
 public:
 	//Constructors & Destructors
 	Enemy();

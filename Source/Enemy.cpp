@@ -76,7 +76,7 @@ void Enemy::updateEnemies(sf::RenderTarget& target, unsigned& points, int& playe
 		}
 		else
 		{
-			this->enemies[i].move(0.0f, 1.2f);
+			this->enemies[i].move(0.0f, 1.3f);
 		}
 
 		//If the enemy is past the bottom of the screen
@@ -86,7 +86,7 @@ void Enemy::updateEnemies(sf::RenderTarget& target, unsigned& points, int& playe
 			this->enemies.erase(this->enemies.begin() + i);
 
 			//Lose health when enemy reach bottom of the screen
-			playerHealth -= 5;
+			playerHealth -= 10;
 		}
 	}
 
@@ -103,9 +103,9 @@ void Enemy::updateEnemies(sf::RenderTarget& target, unsigned& points, int& playe
 				if (this->enemies[i].getGlobalBounds().contains(mousePosView))
 				{
 					//Gain points
-					points += 10;
+					points += 20;
 					//Gain points for the boss
-					bossPoints += 10;
+					bossPoints += 20;
 
 					//Delete enemy
 					deleted = true;
@@ -125,7 +125,7 @@ void Enemy::renderEnemies(sf::RenderTarget& target) {
 
 //Private functions
 void Enemy::initVariables() {
-	this->maxEnemies = 5;
+	this->maxEnemies = 8;
 	this->enemySpawnTimerMax = 65.0f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
 	this->mouseHeld = false;

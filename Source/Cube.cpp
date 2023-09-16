@@ -2,7 +2,7 @@
 
 #include "Game.h"
 
-int main() {
+int WinMain() {
 
     //Init srand
     std::srand(static_cast<unsigned>(time(NULL)));
