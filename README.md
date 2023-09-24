@@ -1,6 +1,6 @@
 # Cube
 
-Simple cube game where you gain points by clicking on the falling cubes, if you miss one cube you lose health and when health is below or equal to 0 you die.
+Simple cube game where you gain points by clicking on the falling cubes, if you miss one cube you lose health and when health is below or equal to 0 game is over.
 There is also strong enemy which you have to defeat.
 
 ## How to Use
