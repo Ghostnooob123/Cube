@@ -114,14 +114,30 @@ void Game::updateMenu() {
 				// Toggle fullscreen
 				if (isFullScreen)
 				{
-					this->window->create(sf::VideoMode::getFullscreenModes()[0], "Cube", sf::Style::Resize | sf::Style::Close);
+					this->window->create(sf::VideoMode(1920, 1080), "Cube", sf::Style::Resize | sf::Style::Close);
 					this->fullScreenToggle.setFillColor(sf::Color::Red);
+
+					//Set window frame rate limit
+					this->window->setFramerateLimit(165);
+
+					//Center of the screen
+					this->centerX = this->window->getSize().x / 2.0f;
+					this->centerY = this->window->getSize().y / 2.0f;
+
 					isFullScreen = false;
 				}
 				else
 				{
-					this->window->create(sf::VideoMode::getFullscreenModes()[0], "Cube", sf::Style::Fullscreen);
+					this->window->create(sf::VideoMode(1920, 1080), "Cube", sf::Style::Fullscreen);
 					this->fullScreenToggle.setFillColor(sf::Color::Green);
+
+					//Set window frame rate limit
+					this->window->setFramerateLimit(165);
+
+					//Center of the screen
+					this->centerX = this->window->getSize().x / 2.0f;
+					this->centerY = this->window->getSize().y / 2.0f;
+
 					isFullScreen = true;
 				}
 			}
@@ -327,9 +343,6 @@ void Game::update() {
 	//Update mouse position
 	this->updateMousePos();
 
-	//Update menu
-	this->updateMenu();
-
 	if (this->startGame) {
 		//Check if game end
 		if (this->playerHealth <= 0) {
@@ -386,6 +399,11 @@ void Game::update() {
 			this->endGame = false;
 			this->bossFight = false;
 		}
+	}
+	else
+	{
+		//Update menu
+		this->updateMenu();
 	}
 }
 void Game::render() {
@@ -453,10 +471,10 @@ void Game::initWindow() {
 	this->videoMode.height = 800;
 	this->videoMode.width = 1300;
 
-	this->window = new sf::RenderWindow(sf::VideoMode::getFullscreenModes()[0], "Cube", sf::Style::Fullscreen);
+	this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "Cube", sf::Style::Fullscreen);
 
 	//Set window frame rate limit
-	this->window->setFramerateLimit(500);
+	this->window->setFramerateLimit(165);
 
 	//Center of the screen
 	this->centerX = this->window->getSize().x / 2.0f;
@@ -465,7 +483,7 @@ void Game::initWindow() {
 void Game::initIcon() {
 	//Load icon from an png file
 	//Check if icon can be loaded
-	if (!this->icon.loadFromFile("Icon/Cube.png"))
+	if (!this->icon.loadFromFile("Source/Icon/Cube.png"))
 	{
 		// Error handling...
 		std::cout << "[-] Error::Game::initIcon Failed to load the font\n";
@@ -475,17 +493,17 @@ void Game::initIcon() {
 void Game::initFonts() {
 	//Load font from an font file
 	//Check if font can be loaded
-	if (!this->gamefont.loadFromFile("Fonts/PixellettersFull.ttf")) {
+	if (!this->gamefont.loadFromFile("Source/Fonts/PixellettersFull.ttf")) {
 		std::cout << "[-] Error::Game::initFonts Failed to load the font\n";
 	}
-	if (!this->menuFont.loadFromFile("Fonts/PixellettersFull.ttf")) {
+	if (!this->menuFont.loadFromFile("Source/Fonts/PixellettersFull.ttf")) {
 		std::cout << "[-] Error::Game::initFonts Failed to load the font\n";
 	}
 }
 void Game::initMusic() {
 	//Open music from an audio file
 	//Check if music can be loaded
-	if (!this->music.openFromFile("Music/Cube Chillv2.wav")) {
+	if (!this->music.openFromFile("Source/Music/Cube Chillv2.wav")) {
 		std::cout << "[-] Error::Game::initMusic Failed to load the font\n";
 	}
 

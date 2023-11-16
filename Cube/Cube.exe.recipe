@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\Game Projects\Cube\x64\Release\Cube.exe</FullPath>
+      <FullPath>D:\Visual Studio\Cube\x64\Release\Cube.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
